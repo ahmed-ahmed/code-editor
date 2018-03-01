@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ViewChild } from '@angular/core';
+import { ElementRef } from '@angular/core';
 
 
 @Component({
@@ -7,47 +9,78 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./code-editor.component.css']
 })
 export class CodeEditorComponent implements OnInit {
-
-  private editorOptions = 
-  {
-    theme: 'vs-dark', 
-    language: 'javascript'
+  @ViewChild('output') _output: ElementRef;
+  editor: any;
+  showMultiple = false;
+  toggleLanguage = true;
+  htmlOptions = {
+    theme: 'vs', language: 'html'
   };
 
-  private code: string= 'function x() {\nconsole.log("Hello world!");\n}';
+  jsOptions = {
+    theme: 'vs', language: 'javascript'
+  };
 
 
-  constructor() { }
+  private _htmlCode: string;
 
-  ngOnInit() {
-   
-    // require.config({ paths: { 'vs': 'monaco-editor/min/vs' }});
-    // require(['vs/editor/editor.main'], function() {
-    //   var editor = monaco.editor.create(document.getElementById('container'), {
-    //     value: [
-    //       'function x() {',
-    //       '\tconsole.log("Hello world!");',
-    //       '}'
-    //     ].join('\n'),
-    //     language: 'javascript'
-    //   });
-    // });
-  
-
-    // var editor = monaco;
-    
-    // .editor.create(document.getElementById('container'), {
-		// 	value: [
-		// 		'function x() {',
-		// 		'\tconsole.log("Hello world!");',
-		// 		'}'
-		// 	].join('\n'),
-		// 	language: 'javascript'
-		// });
-
-
-
+  get htmlCode(): string {
+      return this._htmlCode;
   }
 
+  set htmlCode(value: string) {
+    this._htmlCode = value;
+    var doc = this._output.nativeElement.contentWindow.document;
+    doc.open();
+    doc.write(value);
+    doc.close();
+    console.log(value);
+  }
+
+
+  private _jsCode;
+  get jsCode() {
+    return this._jsCode;
+  }
+
+  set jsCode(value) {
+    this._jsCode = value;
+
+    let document = this._output.nativeElement.contentWindow.document;
+
+    var script = document.createElement('script');
+    script.text = `try {
+        ${value}
+    } catch(error) {
+      throw error;
+    }`;
+    document.body.appendChild(script);
+  }
+
+  ngOnInit() {
+    this.htmlCode = `<!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width">
+      <title>JS Bin</title>
+    </head>
+    <body>
+      <h1>Hi man how are you</h1>
+      <h2>I'm fine thanks</h2>
+      <h3>Forget about it</h3>
+    </body>
+    </html>`;
+  }
+
+
+
+   
+
+  private originalModel ={ language: 'html' ,
+   
+
+  updateOptions() {
+  }
 }
 // https://github.com/atularen/ngx-monaco-editor

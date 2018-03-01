@@ -5,7 +5,25 @@
 <!-- <div id="container" style="width:800px;height:600px;border:1px solid grey"></div>
 
 -->
-<ngx-monaco-editor [options]="editorOptions"></ngx-monaco-editor>
+
+<div style="width: 50%; float: left">
+  <ngx-monaco-editor [options]="htmlOptions" [(ngModel)]="htmlCode"></ngx-monaco-editor>
+  <ngx-monaco-editor [options]="jsOptions" [(ngModel)]="jsCode"></ngx-monaco-editor>
+  <!-- <ngx-monaco-editor [options]="editorOptions" [(model)="code"]></ngx-monaco-editor>
+   -->
+
+  <!-- <ngx-monaco-diff-editor [originalModel]="originalModel" [modifiedModel]="modifiedModel"></ngx-monaco-diff-editor> -->
+
+</div>
+<div style="width: 50%; float: left">
+  <h2>Output</h2>
+
+  <div>
+    <iframe frameborder="0" #output></iframe>
+
+  </div>
+</div>
+
 
 
 <!-- <ngx-monaco-diff-editor [options]="options" [originalModel]="originalModel" [modifiedModel]="modifiedModel"></ngx-monaco-diff-editor> -->
